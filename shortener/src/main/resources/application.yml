@@ -1,0 +1,34 @@
+# shortener/src/main/resources/application.yml
+spring:
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/urlshortener
+    username: postgres
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  data:
+    redis:
+      host: ${VALKEY_HOST:localhost}
+      port: 6379
+
+aws:
+  endpoint: ${AWS_ENDPOINT:}
+  region: ${AWS_REGION:ap-northeast-2}
+
+shortener:
+  sqids-salt: ${SQIDS_SALT:local-dev-salt}
+  cache-warm-size: 1000
+  rate-limit:
+    token-bucket:
+      capacity: 10
+      refill-rate: 5
+    sliding-window:
+      limit: 1000
+      window-seconds: 60
