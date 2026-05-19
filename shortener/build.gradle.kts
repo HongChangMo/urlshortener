@@ -31,6 +31,8 @@ dependencies {
     implementation("software.amazon.awssdk:secretsmanager")
     implementation("software.amazon.awssdk:url-connection-client")
     runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("org.flywaydb:flyway-core")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:junit-jupiter")
