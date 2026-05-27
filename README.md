@@ -13,6 +13,7 @@ Spring Boot 기반 URL 단축 서비스
 | Build | Gradle 8 (멀티모듈) |
 | Test | JUnit 5 + Testcontainers |
 | Performance | k6 |
+| Test API Server | httpbin (kennethreitz/httpbin) |
 
 ## 모듈 구조
 
@@ -49,6 +50,21 @@ curl -X POST http://localhost:8080/api/v1/data/shorten \
 curl -v http://localhost:8080/api/v1/abc123
 # → 302 Location: https://example.com/very/long/url
 ```
+
+## 인프라 구성
+
+```
+[k6] → [shortener:8080] → 302 redirect → [api-server:9090]
+              ↕                    ↕
+          [Valkey]           [PostgreSQL]
+```
+
+| 서비스 | 포트 | 설명 |
+|--------|------|------|
+| shortener | 8080 | URL 단축 서비스 |
+| postgres | 5432 | 데이터베이스 |
+| valkey | 6379 | 캐시 (Redis fork) |
+| api-server | 9090 | 리다이렉트 검증용 httpbin |
 
 ## 로컬 실행
 
@@ -94,15 +110,24 @@ docker compose up --build
 
 ## 성능 테스트 (k6)
 
-앱 기동 후 아래 명령어로 실행합니다.
+`docker compose up --build`로 앱을 먼저 기동한 뒤 아래 명령어로 실행합니다.
+
+이미 실행 중인 컨테이너가 있을 경우 `--no-deps` 플래그로 k6 컨테이너만 단독 실행합니다.
 
 ```bash
 # Smoke — 기본 동작 확인 (1 VU, 30s)
-docker compose --profile smoke up k6-smoke
+docker compose --profile smoke up --no-deps k6-smoke
 
 # Load — 일반 부하 (최대 50 VU, 5m)
-docker compose --profile load up k6-load
+docker compose --profile load up --no-deps k6-load
 
 # Stress — 최대 부하 (최대 300 VU, 10m)
-docker compose --profile stress up k6-stress
+docker compose --profile stress up --no-deps k6-stress
+```
+
+k6 스크립트는 `api-server`(httpbin)를 대상 URL로 사용하여 아래 전체 체인을 검증합니다:
+
+```
+k6 → POST /shorten (originalUrl: api-server/anything/...) → shortCode 발급
+k6 → GET /{shortCode} → 302 redirect → api-server → 200 OK
 ```
