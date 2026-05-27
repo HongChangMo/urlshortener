@@ -1,5 +1,6 @@
 package com.urlshortener.interfaces.api;
 
+import com.urlshortener.exception.RateLimitExceededException;
 import com.urlshortener.exception.UrlExpiredException;
 import com.urlshortener.exception.UrlNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -17,4 +18,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UrlExpiredException.class)
     @ResponseStatus(HttpStatus.GONE)
     public void handleExpired() {}
+
+    @ExceptionHandler(RateLimitExceededException.class)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
+    public void handleRateLimitExceeded() {}
 }
