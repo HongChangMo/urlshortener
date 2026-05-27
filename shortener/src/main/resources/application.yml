@@ -29,9 +29,11 @@ shortener:
   sqids-salt: ${SQIDS_SALT:local-dev-salt}
   cache-warm-size: 1000
   rate-limit:
-    token-bucket:
+    shorten:
       capacity: 10
-      refill-rate: 5
-    sliding-window:
-      limit: 1000
-      window-seconds: 60
+      refill-tokens: 5
+      refill-period-seconds: 1
+    redirect:
+      capacity: 100
+      refill-tokens: 100
+      refill-period-seconds: 1
