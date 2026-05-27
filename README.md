@@ -94,15 +94,17 @@ docker compose up --build
 
 ## 성능 테스트 (k6)
 
-앱 기동 후 아래 명령어로 실행합니다.
+`docker compose up --build`로 앱을 먼저 기동한 뒤 아래 명령어로 실행합니다.
+
+이미 실행 중인 컨테이너가 있을 경우 `--no-deps` 플래그로 k6 컨테이너만 단독 실행합니다.
 
 ```bash
 # Smoke — 기본 동작 확인 (1 VU, 30s)
-docker compose --profile smoke up k6-smoke
+docker compose --profile smoke up --no-deps k6-smoke
 
 # Load — 일반 부하 (최대 50 VU, 5m)
-docker compose --profile load up k6-load
+docker compose --profile load up --no-deps k6-load
 
 # Stress — 최대 부하 (최대 300 VU, 10m)
-docker compose --profile stress up k6-stress
+docker compose --profile stress up --no-deps k6-stress
 ```

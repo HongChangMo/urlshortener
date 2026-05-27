@@ -7,7 +7,7 @@ spring:
     virtual:
       enabled: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/urlshortener
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/urlshortener
     username: postgres
     password: ${DB_PASSWORD:postgres}
   jpa:

@@ -1,8 +1,11 @@
 services:
   shortener:
-    build: ./shortener
+    build:
+      context: .
+      dockerfile: shortener/Dockerfile
     ports: ["8080:8080"]
     environment:
+      - DB_HOST=postgres
       - DB_PASSWORD=postgres
       - VALKEY_HOST=valkey
     depends_on: [postgres, valkey]
