@@ -1,8 +1,8 @@
 package com.urlshortener.application;
 
 import com.urlshortener.domain.Url;
-import com.urlshortener.domain.exception.UrlExpiredException;
-import com.urlshortener.domain.exception.UrlNotFoundException;
+import com.urlshortener.exception.UrlExpiredException;
+import com.urlshortener.exception.UrlNotFoundException;
 import com.urlshortener.domain.repository.UrlRepository;
 import com.urlshortener.infrastructure.cache.UrlCacheService;
 import com.urlshortener.infrastructure.codegen.ShortCodeGenerator;

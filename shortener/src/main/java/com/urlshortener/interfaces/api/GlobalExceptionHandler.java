@@ -1,7 +1,7 @@
 package com.urlshortener.interfaces.api;
 
-import com.urlshortener.domain.exception.UrlExpiredException;
-import com.urlshortener.domain.exception.UrlNotFoundException;
+import com.urlshortener.exception.UrlExpiredException;
+import com.urlshortener.exception.UrlNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
